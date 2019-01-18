@@ -1,33 +1,26 @@
 <template>
   <v-app>
-    <v-toolbar app>
-      <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
+    <v-toolbar app color="blue">
+      <v-toolbar-title class="headline text-uppercase white--text">
+        <span>Facturame: </span>
+        <span class="font-weight-light">Creación de facturas PDF</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn
-        flat
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-      >
-        <span class="mr-2">Latest Release</span>
-      </v-btn>
     </v-toolbar>
 
     <v-content>
-      <HelloWorld/>
+      <FirstStep/>
     </v-content>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
+import FirstStep from './components/FirstStep'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    FirstStep
   },
   data () {
     return {
