@@ -14,7 +14,7 @@
               <first-step v-on:step-is-valid="getFormData"/>
             </v-stepper-content>
             <v-stepper-content step="2">
-            <second-step v-on:step-back="stepBack"/>
+            <second-step v-on:step-back="stepBack" v-on:save="savePDF"/>
             </v-stepper-content>
           </v-stepper-items>
         </v-stepper>
@@ -46,6 +46,10 @@
       },
       stepBack () {
         this.e1 =1;
+      },
+      savePDF (value) {
+        console.log(value);
+        console.log(this.clientData);
       }
     }
   }

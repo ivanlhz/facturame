@@ -53,7 +53,7 @@
         </td>
       </template>
     </v-data-table>
-     <v-btn @click="dialog = true" color="primary" block>Añadir Elemento</v-btn>
+     <v-btn @click="dialog = true" block>Añadir Elemento</v-btn>
   </div>
 </template>
 

@@ -19,7 +19,7 @@
         </v-flex>
         <v-flex xs4 right>
           <v-btn large color="secondary" @click="stepBack">ATRAS</v-btn>
-          <v-btn large color="primary">GUARDAR</v-btn>
+          <v-btn large color="primary" @click="savePDF">GUARDAR</v-btn>
         </v-flex>
       </v-layout>
     </v-container>
@@ -56,6 +56,9 @@ export default {
        this.invoice.data = [...val.invoiceData];
        this.invoice.totalBruto = val.totalBruto;
       }
+    },
+    savePDF() {
+      this.$emit('save', this.invoice);
     }
   }
 }
