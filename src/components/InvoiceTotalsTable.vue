@@ -88,10 +88,12 @@
       calculaIGIC () {
         const item = this.table.items[0];
         item.igicNeto = item.totalBruto ? item.totalBruto * (item.igic / 100) : 0;
+        item.igicNeto = parseFloat(item.igicNeto.toFixed(2));
       },
       calculaTotal () {
         const item = this.table.items[0];
         item.totalNeto = item.totalBruto ? item.totalBruto + item.igicNeto + parseFloat(item.gastosEnvio) - item.descuentoNeto : 0;
+        item.totalNeto = item.totalNeto.toFixed(2);
       },
       save () {
         this.calculaDescuentoNeto ();
