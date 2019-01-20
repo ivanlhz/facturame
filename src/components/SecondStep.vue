@@ -14,6 +14,9 @@
         <v-flex xs12 md12>
           <invoice-items-table v-on:table-data="getTableData"/>
         </v-flex>
+        <v-flex>
+          <invoice-totals-table :total-bruto="invoice.totalBruto"/>
+        </v-flex>
         <v-flex xs4 right>
           <v-btn large color="secondary" @click="stepBack">ATRAS</v-btn>
           <v-btn large color="primary">GUARDAR</v-btn>
@@ -25,10 +28,12 @@
 
 <script>
 import InvoiceItemsTable from './InvoiceItemsTable';
+import InvoiceTotalsTable from './InvoiceTotalsTable';
 
 export default {
   components: {
-    InvoiceItemsTable
+    InvoiceItemsTable,
+    InvoiceTotalsTable
   },
   data: () => ({
     nMax: 12,
@@ -38,6 +43,7 @@ export default {
       number: '',
       date:'',
       seller:'',
+      totalBruto: 0,
       data:[]
     }
   }), 
@@ -46,9 +52,9 @@ export default {
       this.$emit('step-back');
     },
     getTableData(val) {
-      console.log(val);
-      if(val.length > 0) {
-       this.invoice.data = [...val];
+      if(val.invoiceData.length >= 0) {
+       this.invoice.data = [...val.invoiceData];
+       this.invoice.totalBruto = val.totalBruto;
       }
     }
   }

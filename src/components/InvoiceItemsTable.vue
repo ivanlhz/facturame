@@ -42,15 +42,8 @@
         <td class="text-xs-right">{{ props.item.amount }}</td>
         <td class="text-xs-left">{{ props.item.description }}</td>
         <td class="text-xs-right">{{ props.item.price }}</td>
-        <td class="text-xs-right">{{ calulate(props.item) }}</td>
+        <td class="text-xs-right">{{ calculate(props.item) }}</td>
         <td class="justify-center layout px-0">
-          <v-icon
-            small
-            class="mr-2"
-            @click="editItem(props.item)"
-          >
-            edit
-          </v-icon>
           <v-icon
             small
             @click="deleteItem(props.item)"
@@ -63,7 +56,6 @@
      <v-btn @click="dialog = true" color="primary" block>Añadir Elemento</v-btn>
   </div>
 </template>
-
 
 <script>
   export default {
@@ -79,8 +71,9 @@
         { text: 'Descrición', value: 'description' },
         { text: 'Precio Unitario', value: 'price',sortable: false },
         { text: 'Importe (€)', value: 'subtotal' },
-        { text: 'Acciones', value: 'name', sortable: false }
+        { text: 'Acciones',  align: 'center', sortable: false }
       ],
+      totalBruto: 0,
       invoiceLines: [],
       editedIndex: -1,
       editedItem: {
@@ -126,7 +119,10 @@
 
       deleteItem (item) {
         const index = this.invoiceLines.indexOf(item)
-        confirm('¿Estás seguro de que quieres borrar este elemento?') && this.invoiceLines.splice(index, 1)
+        if(confirm('¿Estás seguro de que quieres borrar este elemento?')) {
+          this.invoiceLines.splice(index, 1);
+          this.$emit('table-data', {totalBruto: this.calculateTotal(), invoiceData: this.invoiceLines })
+        }
       },
 
       close () {
@@ -143,11 +139,22 @@
         } else {
           this.invoiceLines.push(this.editedItem)
         }
-        this.$emit('table-data', this.invoiceLines)
+
+       this.totalBruto = this.calculateTotal()
+
+        this.$emit('table-data', {totalBruto: this.calculateTotal(), invoiceData: this.invoiceLines })
         this.close()
       },
 
-      calulate (item) {
+      calculateTotal() {
+        let total = 0;
+        this.invoiceLines.map( item => {
+          total = total + this.calculate(item);
+        })
+        return total;
+      },
+
+      calculate (item) {
         return item.amount * item.price;
       }
     }
