@@ -6,7 +6,6 @@
           <v-flex md4>
             <v-text-field
               v-model="form.cif"
-              :rules="cifRules"
               :counter="cifMax"
               label="CIF/NIF"
               :maxlength="cifMax"
@@ -14,33 +13,43 @@
           </v-flex>
           <v-flex md12>
             <v-text-field
+              v-validate="'required|min:10'"
               v-model="form.name"
-              :rules="nameRules"
               :counter="largeFieldMax"
-              label="Nombre"
               :maxlength= "largeFieldMax"
+              label="Nombre"
+              data-vv-name="name"
               required
+              :error-messages="errors.collect('name')"
             />
           </v-flex>
           <v-flex md6>
-            <v-text-field v-model="form.cp" :rules="cpRules" :counter="cpMax" :maxlength="cpMax" label="C.P"/>
+            <v-text-field v-model="form.cp" :counter="cpMax" :maxlength="cpMax" label="C.P"/>
           </v-flex>
           <v-flex md6>
-            <v-text-field v-model="form.tfno" :rules="tfnoRules" :maxlength="tfnoMax" label="Teléfono" required />
+            <v-text-field v-model="form.tfno" :maxlength="tfnoMax" label="Teléfono" required />
           </v-flex>
           <v-flex md12>
-            <v-text-field v-model="form.street" :rules="streetRules" :maxlength= "largeFieldMax" label="Calle"/>
+            <v-text-field v-model="form.street" :maxlength= "largeFieldMax" label="Calle"/>
           </v-flex>
           <v-flex md12>
-            <v-text-field v-model="form.city" :rules="cityRules" :maxlength= "largeFieldMax" label="Ciudad"/>
+            <v-text-field v-model="form.city" :maxlength= "largeFieldMax" label="Ciudad"/>
           </v-flex>
           <v-flex md12>
-            <v-text-field v-model="form.provice" :rules="provinceRules" :maxlength= "largeFieldMax" label="Provincia"/>
+            <v-text-field v-model="form.province" :maxlength= "largeFieldMax" label="Provincia"/>
           </v-flex>
           <v-flex md2>
-            <v-text-field v-model="form.IGIC" type="number" :rules="igicRules" label="IGIC"/>
+            <v-text-field v-model="form.IGIC" type="number" label="IGIC"/>
           </v-flex>
         </v-form>
+      </v-flex>
+    </v-layout>
+    <v-layout right>
+      <v-flex>
+        <v-btn large color="primary" @click="nextClickHandler">
+          Siguiente
+        </v-btn>
+        <v-btn large flat @click="clearForm">Clear</v-btn>
       </v-flex>
     </v-layout>
   </v-container>
@@ -48,7 +57,15 @@
 
 
 <script>
+import Vue from "vue"
+import VeeValidate from "vee-validate"
+
+Vue.use(VeeValidate)
+
 export default {
+   $_veeValidate: {
+      validator: 'new'
+    }, 
   data: () => ({
     largeFieldMax: 100,
     tfnoMax: 11,
@@ -65,6 +82,22 @@ export default {
       IGIC: 6.5
     },
     valid: false
-  })
+  }),
+   methods: {
+      async nextClickHandler () {
+        const result = await this.$validator.validate();
+        this.$emit('step-is-valid',result);
+     },
+     clearForm () {
+      this.form.cif = "";
+      this.form.name = "";
+      this.form.cp= "";
+      this.form.tfno= "";
+      this.form.street= "";
+      this.form.city= "";
+      this.form.province = "";
+      this.form.IGIC= 6.5
+     }
+   }
 };
 </script>
