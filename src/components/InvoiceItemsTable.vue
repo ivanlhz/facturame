@@ -42,7 +42,7 @@
         <td class="text-xs-right">{{ props.item.amount }}</td>
         <td class="text-xs-left">{{ props.item.description }}</td>
         <td class="text-xs-right">{{ props.item.price }}</td>
-        <td class="text-xs-right">{{ calculate(props.item) }}</td>
+        <td class="text-xs-right">{{ props.item.subtotal }}</td>
         <td class="justify-center layout px-0">
           <v-icon
             small
@@ -134,6 +134,7 @@
       },
 
       save () {
+        this.editedItem.subtotal = this.calculate(this.editedItem);
         if (this.editedIndex > -1) {
           Object.assign(this.invoiceLines[this.editedIndex], this.editedItem)
         } else {

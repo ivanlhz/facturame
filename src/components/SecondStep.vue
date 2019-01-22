@@ -15,7 +15,7 @@
           <invoice-items-table v-on:table-data="getTableData"/>
         </v-flex>
         <v-flex>
-          <invoice-totals-table :total-bruto="invoice.totalBruto"/>
+          <invoice-totals-table :total-bruto="invoice.totalBruto" v-on:footer-data="saveFooterData"/>
         </v-flex>
         <v-flex xs4 right>
           <v-btn large color="secondary" @click="stepBack">ATRAS</v-btn>
@@ -44,7 +44,8 @@ export default {
       date:'',
       seller:'',
       totalBruto: 0,
-      data:[]
+      data:[],
+      footerData: {}
     }
   }), 
   methods:{
@@ -59,6 +60,9 @@ export default {
     },
     savePDF() {
       this.$emit('save', this.invoice);
+    },
+    saveFooterData (value) {
+      this.invoice.footerData = value;
     }
   }
 }

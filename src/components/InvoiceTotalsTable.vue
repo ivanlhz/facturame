@@ -23,7 +23,21 @@
         </v-edit-dialog>
       </td>
       <td class="text-xs-right">{{ props.item.descuentoNeto }}</td>
-      <td class="text-xs-right">{{ props.item.igic }}</td>
+      <td class="right">
+        <v-edit-dialog
+          :return-value.sync="props.item.igic"
+          lazy
+          @save="save"
+        > {{ props.item.igic }}
+          <v-text-field
+            slot="input"
+            v-model="props.item.igic"
+            label="Edit"
+            single-line
+            counter
+          ></v-text-field>
+        </v-edit-dialog>
+      </td>
       <td class="text-xs-right">{{ props.item.igicNeto }}</td>
       <td class="right">
         <v-edit-dialog
@@ -75,9 +89,7 @@
     watch: {
       totalBruto(value, oldValue) {
        this.table.items[0].totalBruto = value;
-       this.calculaIGIC(value);
-       this.calculaDescuentoNeto(value);
-       this.calculaTotal(value);
+      this.save();
       }
     },
     methods: {
@@ -96,8 +108,10 @@
         item.totalNeto = item.totalNeto.toFixed(2);
       },
       save () {
+        this.calculaIGIC();
         this.calculaDescuentoNeto ();
         this.calculaTotal ();
+        this.$emit('footer-data', this.table.items[0])
       }
     }
   }

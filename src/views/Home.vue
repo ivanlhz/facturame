@@ -19,6 +19,9 @@
           </v-stepper-items>
         </v-stepper>
       </v-flex>
+      <v-flex>
+        <iframe v-if="url" :src="url" />
+      </v-flex>
     </v-layout>
   </v-container>
 </template>
@@ -27,6 +30,8 @@
   import FirstStep from '@/components/FirstStep'
   import SecondStep from '@/components/SecondStep'
   import PageTitle from '@/components/PageTitle'
+  import jsPDF from 'jspdf'
+  import {InvoiceMaker, OTHERS_TYPE} from '@/libs/invocemaker'
 
   export default {
     components: {
@@ -37,7 +42,8 @@
     data: () => ({
         e1: 0,
         stepValid: false,
-        clientData : {}
+        clientData : {},
+        url: undefined
     }),
     methods: {
       getFormData (value) {
@@ -48,8 +54,25 @@
         this.e1 =1;
       },
       savePDF (value) {
-        console.log(value);
-        console.log(this.clientData);
+        const doc = new jsPDF()
+        const pdfMaker = new InvoiceMaker(doc);
+
+        pdfMaker.pdfSetRjTictacInfo(20, OTHERS_TYPE);
+        pdfMaker.pdfSetClientInfo(40, this.clientData);
+        pdfMaker.pdfSetContentHeader(value);
+        pdfMaker.pdfSetConentTable({
+          headers:[
+            {name: 'Cant', width: 40, align: 'right'},
+            {name: 'Descripción', width: 160},
+            {name: 'Precio Un.', width: 180, align: 'right'},
+            {name: 'Importe', width: 200, align: 'right'}
+          ],
+          data : pdfMaker.parceDataForTable(value.data)
+        })
+        pdfMaker.pdfSetDocumentFooter(value.footerData);
+        pdfMaker.drawMargins();
+
+        doc.save('a4.pdf')
       }
     }
   }
