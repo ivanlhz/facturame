@@ -39,7 +39,7 @@ class InvoiceMaker {
       .setFontSize(fontSize)
       .text(
         text,
-        left ? 50 : 140,
+        left ? 47 : 140,
         basePosition +
           5 * (left ? this.headerLineNumber : this.headerLineNumberR),
         {
@@ -354,7 +354,7 @@ class InvoiceMaker {
   }
 
   pdfSetDocumentFooter = data => {
-    const footerX = 42.5;
+    const footerX = 43;
     const linea = 260;
     const lineaData = linea + 8;
     const fieldHeader = {
