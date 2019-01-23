@@ -413,7 +413,7 @@ class InvoiceMaker {
         field
       );
       this.document.setFontStyle("bold");
-      this.document.text(data.totalNeto, footerX + 120, lineaData, field);
+      this.document.text(data.totalNeto.toFixed(2), footerX + 120, lineaData, field);
     }
   };
 

@@ -3,28 +3,39 @@
     <v-container grid-list-md text-xs-center>
       <v-layout row wrap>
          <v-flex xs12 md4>
-          <v-text-field  v-model="invoice.number" :counter="invoiceMax" :maxlength="nMax" label="Nº Factura"/>
+          <v-text-field  v-model="invoice.number" :counter="invoiceMax" :maxlength="invoiceMax" label="Nº Factura"/>
         </v-flex>
         <v-flex xs12 md4>
           <v-text-field v-model="invoice.date" type="date" label="date" required />
         </v-flex>
         <v-flex xs12 md4>
-          <v-text-field v-model="invoice.seller" :maxlength="sellerMax" label="Vendedor" required />
+          <v-text-field v-model="invoice.seller" :counter="sellerMax" :maxlength="sellerMax" label="Vendedor" required />
         </v-flex>
-        <v-flex xs12 md12>
+        <v-flex xs12 md12 class="no-padding">
           <invoice-items-table v-on:table-data="getTableData"/>
         </v-flex>
-        <v-flex>
+        <v-flex class="no-padding">
           <invoice-totals-table :total-bruto="invoice.totalBruto" v-on:footer-data="saveFooterData"/>
         </v-flex>
-        <v-flex xs4 right>
-          <v-btn large color="secondary" @click="stepBack">ATRAS</v-btn>
+        <div class="flex-right">
+          <v-btn large flat @click="stepBack">ATRAS</v-btn>
           <v-btn large color="primary" @click="savePDF">GUARDAR</v-btn>
-        </v-flex>
+        </div>
       </v-layout>
     </v-container>
   </v-form>
 </template>
+
+<style lang="scss">
+  .flex-right{
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+  }
+  div.no-padding {
+    padding: 0px !important;
+  }
+</style>
 
 <script>
 import InvoiceItemsTable from './InvoiceItemsTable';
@@ -38,7 +49,7 @@ export default {
   data: () => ({
     nMax: 12,
     invoiceMax: 7,
-    sellerMax: 12,
+    sellerMax: 7,
     invoice: {
       number: '',
       date:'',

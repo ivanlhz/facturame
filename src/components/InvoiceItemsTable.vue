@@ -1,39 +1,38 @@
 <template>
   <div>
-    <v-toolbar flat color="white">
-      <v-dialog v-model="dialog" max-width="500px">
-        <v-card>
-          <v-card-title>
-            <span class="headline">{{ formTitle }}</span>
-          </v-card-title>
-          <v-card-text>
-            <v-container grid-list-md>
-              <v-layout wrap>
-                <v-flex xs12 sm6 md4>
-                  <v-text-field v-model="editedItem.amount" label="Cantidad"></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm6 md4>
-                  <v-text-field v-model="editedItem.price" label="Precio"></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm12 md12>
-                  <v-textarea v-model="editedItem.description" label="description"></v-textarea>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
-            <v-btn color="blue darken-1" flat @click="save">Añadir</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </v-toolbar>
+    <v-btn @click="dialog = true" class="primary right">Añadir Elemento</v-btn>
+    <v-dialog v-model="dialog" max-width="500px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">{{ formTitle }}</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container grid-list-md>
+            <v-layout wrap>
+              <v-flex xs12 sm6 md4>
+                <v-text-field v-model.number="editedItem.amount" label="Cantidad"></v-text-field>
+              </v-flex>
+              <v-flex xs12 sm6 md4>
+                <v-text-field v-model.number="editedItem.price" label="Precio"></v-text-field>
+              </v-flex>
+              <v-flex xs12 sm12 md12>
+                <v-textarea v-model="editedItem.description" label="description"></v-textarea>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
+          <v-btn color="blue darken-1" flat @click="save">Añadir</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
     <v-data-table
       :headers="headers"
       :items="invoiceLines"
-      class="elevation-3"
+      class="mytable"
       no-data-text="Añade un elemento"
       no-results-text="No se han encontrado elementos"
       hide-actions
@@ -53,9 +52,20 @@
         </td>
       </template>
     </v-data-table>
-     <v-btn @click="dialog = true" block>Añadir Elemento</v-btn>
   </div>
 </template>
+
+<style lang="scss">
+.mytable .v-table{
+  border: 1px solid #6d6d6d;
+  thead {
+    background-color: #424242;
+  }
+  th {
+    color: white!important;
+  }
+}
+</style>
 
 <script>
   export default {
@@ -68,7 +78,7 @@
           sortable: false,
           value: 'amount'
         },
-        { text: 'Descrición', value: 'description' },
+        { text: 'Descripción', value: 'description' },
         { text: 'Precio Unitario', value: 'price',sortable: false },
         { text: 'Importe (€)', value: 'subtotal' },
         { text: 'Acciones',  align: 'center', sortable: false }

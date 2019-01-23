@@ -43,10 +43,10 @@
     </v-layout>
     <v-layout right>
       <v-flex>
+        <v-btn large flat @click="clearForm">Limpiar</v-btn>
         <v-btn large color="primary" @click="nextClickHandler">
           Siguiente
         </v-btn>
-        <v-btn large flat @click="clearForm">Clear</v-btn>
       </v-flex>
     </v-layout>
   </v-container>

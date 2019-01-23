@@ -1,8 +1,8 @@
 <template>
   <v-app>
     <v-content class="blue-grey darken-4">
-       <v-layout wrap justify-center>
-        <v-flex md6>
+       <v-layout justify-center>
+        <v-flex md7>
           <router-view/>
         </v-flex>
        </v-layout>

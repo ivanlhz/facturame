@@ -2,8 +2,8 @@
    <v-data-table
     :headers="table.headers"
     :items="table.items"
-    class="elevation-1"
     hide-actions
+    class="totalTable"
   >
      <template slot="items" slot-scope="props">
       <td class="text-xs-right">{{ props.item.totalBruto }}</td>
@@ -22,7 +22,7 @@
           ></v-text-field>
         </v-edit-dialog>
       </td>
-      <td class="text-xs-right">{{ props.item.descuentoNeto }}</td>
+      <td class="text-xs-right">{{ props.item.descuentoNeto.toFixed(2) }}</td>
       <td class="right">
         <v-edit-dialog
           :return-value.sync="props.item.igic"
@@ -38,7 +38,7 @@
           ></v-text-field>
         </v-edit-dialog>
       </td>
-      <td class="text-xs-right">{{ props.item.igicNeto }}</td>
+      <td class="text-xs-right">{{ props.item.igicNeto.toFixed(2) }}</td>
       <td class="right">
         <v-edit-dialog
           :return-value.sync="props.item.gastosEnvio"
@@ -54,10 +54,24 @@
           ></v-text-field>
         </v-edit-dialog>
       </td>
-      <td class="text-xs-right">{{ props.item.totalNeto }}</td>
+      <td class="text-xs-right">{{ props.item.totalNeto.toFixed(2) }}</td>
     </template>
   </v-data-table>
 </template>
+
+<style lang="scss">
+.totalTable .v-table {
+  thead {
+    background-color: #d6d6d6;
+  }
+}
+table{
+  overflow: hidden;
+  tbody tr:hover {
+    background-color: white!important;
+  }
+}
+</style>
 
 <script>
   export default {
@@ -78,7 +92,7 @@
         headers : [
           { text: 'Tot. Bruto', value: 'totalBruto',sortable: false },
           { text: '% Dto', value: 'descuento',sortable: false },
-          { text: 'Descuento', value: 'descuentoNeto' },
+          { text: 'Descuento', value: 'descuentoNeto', sortable: false },
           { text: 'IGIC',  align: 'center', value: 'igic', sortable: false },
           { text: 'Cuota',  align: 'center', value: 'igicNeto', sortable: false },
           { text: 'G. Envio',  align: 'center', value: 'gastosEnvio', sortable: false },
@@ -100,12 +114,11 @@
       calculaIGIC () {
         const item = this.table.items[0];
         item.igicNeto = item.totalBruto ? item.totalBruto * (item.igic / 100) : 0;
-        item.igicNeto = parseFloat(item.igicNeto.toFixed(2));
+        item.igicNeto = parseFloat(item.igicNeto);
       },
       calculaTotal () {
         const item = this.table.items[0];
         item.totalNeto = item.totalBruto ? item.totalBruto + item.igicNeto + parseFloat(item.gastosEnvio) - item.descuentoNeto : 0;
-        item.totalNeto = item.totalNeto.toFixed(2);
       },
       save () {
         this.calculaIGIC();

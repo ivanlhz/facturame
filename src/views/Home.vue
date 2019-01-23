@@ -54,25 +54,27 @@
         this.e1 =1;
       },
       savePDF (value) {
-        const doc = new jsPDF()
-        const pdfMaker = new InvoiceMaker(doc);
+        if (value.data.length > 0) {
+          const doc = new jsPDF()
+          const pdfMaker = new InvoiceMaker(doc);
 
-        pdfMaker.pdfSetRjTictacInfo(20, OTHERS_TYPE);
-        pdfMaker.pdfSetClientInfo(40, this.clientData);
-        pdfMaker.pdfSetContentHeader(value);
-        pdfMaker.pdfSetConentTable({
-          headers:[
-            {name: 'Cant', width: 35, align: 'right'},
-            {name: 'Descripción', width: 150},
-            {name: 'Precio Un.', width: 176, align: 'right'},
-            {name: 'Importe', width: 200, align: 'right'}
-          ],
-          data : pdfMaker.parceDataForTable(value.data)
-        })
-        pdfMaker.pdfSetDocumentFooter(value.footerData);
-        // pdfMaker.drawMargins();
+          pdfMaker.pdfSetRjTictacInfo(20, OTHERS_TYPE);
+          pdfMaker.pdfSetClientInfo(40, this.clientData);
+          pdfMaker.pdfSetContentHeader(value);
+          pdfMaker.pdfSetConentTable({
+            headers:[
+              {name: 'Cant', width: 35, align: 'right'},
+              {name: 'Descripción', width: 150},
+              {name: 'Precio Un.', width: 176, align: 'right'},
+              {name: 'Importe', width: 200, align: 'right'}
+            ],
+            data : pdfMaker.parceDataForTable(value.data)
+          })
+          pdfMaker.pdfSetDocumentFooter(value.footerData);
+          // pdfMaker.drawMargins();
 
-        doc.save('a4.pdf')
+          doc.save('a4.pdf')
+        }
       }
     }
   }
