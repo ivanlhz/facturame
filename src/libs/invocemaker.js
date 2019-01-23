@@ -18,15 +18,15 @@ class InvoiceMaker {
 
   getDoc = () => this.document;
 
-  calculatePositions = formType => {
-    if (formType.indexOf(TYPE_RESELLER) !== -1) {
-      this.rectWidth -= 100;
-      this.separatorX -= 100;
-      this.morinfoWidth -= 100;
-      this.footerContentX += 200;
-      this.footerContentWidth -= 10;
-    }
-  };
+  // calculatePositions = formType => {
+  //   if (formType.indexOf(TYPE_RESELLER) !== -1) {
+  //     this.rectWidth -= 100;
+  //     this.separatorX -= 100;
+  //     this.morinfoWidth -= 100;
+  //     this.footerContentX += 200;
+  //     this.footerContentWidth -= 10;
+  //   }
+  // };
 
   secondFormLeftWidth = type => (type.indexOf(TYPE_PVP) !== -1 ? 200 : 170);
 
@@ -98,68 +98,68 @@ class InvoiceMaker {
     writeHeaderLine(`Tlf: ${params.tfno}`, 9, "left");
   };
 
-  pdfSetItems = (items, shipping, formModel) => {
-    this.calculatePositions(formModel);
-    const footerxPotition = this.footerContentX;
-    let line = 0;
-    let importe = 0;
-    this.document.fontSize(10);
-    items.forEach(item => {
-      if (item.amount > 0) {
-        const amount = parseFloat(item.amount)
-          .toFixed(2)
-          .toString();
-        this.document.fontSize(12).text(amount, 23, 320 + line * 15);
-        this.document.text(item.name.toLocaleUpperCase(), 123, 320 + line * 15);
-        this.document.text(
-          parseFloat(item.price.toString()).toFixed(2),
-          463,
-          320 + line * 15,
-          {
-            width: 100,
-            align: "right"
-          }
-        );
-        line += 1;
-        importe += item.amount * item.price;
-      }
-    });
-    const subtotal = parseFloat(importe) + parseFloat(shipping);
-    const igic = parseFloat(importe) * 0.07;
-    const total = igic + subtotal;
+  // pdfSetItems = (items, shipping, formModel) => {
+  //   this.calculatePositions(formModel);
+  //   const footerxPotition = this.footerContentX;
+  //   let line = 0;
+  //   let importe = 0;
+  //   this.document.fontSize(10);
+  //   items.forEach(item => {
+  //     if (item.amount > 0) {
+  //       const amount = parseFloat(item.amount)
+  //         .toFixed(2)
+  //         .toString();
+  //       this.document.fontSize(12).text(amount, 23, 320 + line * 15);
+  //       this.document.text(item.name.toLocaleUpperCase(), 123, 320 + line * 15);
+  //       this.document.text(
+  //         parseFloat(item.price.toString()).toFixed(2),
+  //         463,
+  //         320 + line * 15,
+  //         {
+  //           width: 100,
+  //           align: "right"
+  //         }
+  //       );
+  //       line += 1;
+  //       importe += item.amount * item.price;
+  //     }
+  //   });
+  //   const subtotal = parseFloat(importe) + parseFloat(shipping);
+  //   const igic = parseFloat(importe) * 0.07;
+  //   const total = igic + subtotal;
 
-    this.document.text(
-      parseFloat(importe).toFixed(2),
-      footerxPotition + 85,
-      625,
-      {
-        width: 95,
-        align: "right"
-      }
-    );
-    this.document.text(
-      parseFloat(shipping).toFixed(2),
-      footerxPotition + 85,
-      637,
-      {
-        width: 95,
-        align: "right"
-      }
-    );
-    this.document.text(parseFloat(igic).toFixed(2), footerxPotition + 85, 649, {
-      width: 95,
-      align: "right"
-    });
-    this.document.text(
-      parseFloat(total).toFixed(2),
-      footerxPotition + 85,
-      672,
-      {
-        width: 95,
-        align: "right"
-      }
-    );
-  };
+  //   this.document.text(
+  //     parseFloat(importe).toFixed(2),
+  //     footerxPotition + 85,
+  //     625,
+  //     {
+  //       width: 95,
+  //       align: "right"
+  //     }
+  //   );
+  //   this.document.text(
+  //     parseFloat(shipping).toFixed(2),
+  //     footerxPotition + 85,
+  //     637,
+  //     {
+  //       width: 95,
+  //       align: "right"
+  //     }
+  //   );
+  //   this.document.text(parseFloat(igic).toFixed(2), footerxPotition + 85, 649, {
+  //     width: 95,
+  //     align: "right"
+  //   });
+  //   this.document.text(
+  //     parseFloat(total).toFixed(2),
+  //     footerxPotition + 85,
+  //     672,
+  //     {
+  //       width: 95,
+  //       align: "right"
+  //     }
+  //   );
+  // };
 
   formatDate = date =>
     date
@@ -294,7 +294,7 @@ class InvoiceMaker {
    */
   pdfSetContentHeader = data => {
     const baseLine = 100;
-    let currentPosition = 20;
+    let currentPosition = 23;
     const fieldProperties = {
       align: "left",
       maxWidth: 14
@@ -307,13 +307,13 @@ class InvoiceMaker {
     currentPosition += 50;
     this.document.setFontStyle("bold");
     this.document.text("Fecha:", currentPosition, baseLine);
-    currentPosition += 10;
+    currentPosition += 13;
     this.document.setFontStyle("normal");
     this.document.text(data.date, currentPosition, baseLine, {
       align: "left",
       maxWidth: 18
     });
-    currentPosition += 62;
+    currentPosition += 59;
     this.document.setFontStyle("bold");
     this.document.text("Vendedor:", currentPosition, baseLine);
     currentPosition += 18;
@@ -323,33 +323,40 @@ class InvoiceMaker {
 
   pdfSetConentTable = params => {
     let baseLine = 108;
-    let lastWidth = 20;
+    let lastWidth = 23;
+    this.document.line(lastWidth - 3, baseLine - 5, 190, baseLine - 5);
     params.headers.map(header => {
       this.document.text(header.name, lastWidth, baseLine);
       lastWidth = header.width;
     });
 
-    lastWidth = 20;
+    lastWidth = 23;
+    this.document.line(lastWidth - 3, baseLine + 3, 190, baseLine + 3);
     baseLine += 8;
     if (params.data) {
       params.data.map((row, rowIndex) => {
         row.map((cell, colIndex) => {
           const align = params.headers[colIndex].align;
-          const position = align && align === 'right' ? lastWidth + 15 : lastWidth;
+          const columnWidth = params.headers[colIndex].name.length * 1.6;
+          const position = align && align === 'right' ? lastWidth + columnWidth : lastWidth + 1;
           this.document.text(cell, position, baseLine + 8 * rowIndex, {
             align: align ? align : "left"
           });
           lastWidth = params.headers[colIndex].width;
         });
-        lastWidth = 20;
+        lastWidth = 23;
       });
     }
   };
+  
   drawMargins() {
     // 210 x 300
     this.document.setDrawColor('blue');
     this.document.line(20,0,20,300);
     this.document.line(190,0,190,300);
+    this.document.setDrawColor('orange');
+    this.document.line(23,0,23,300);
+    this.document.line(187,0,187,300);
     this.document.setDrawColor('black');
   }
 
@@ -368,7 +375,8 @@ class InvoiceMaker {
 
     if (data) {
       this.document.rect(footerX - 10, linea - 5, 145, 15);
-      this.document.line(footerX - 10, linea + 2, 177, linea + 2);
+      this.document.line(footerX - 10, linea + 2, 178, linea + 2);
+      this.document.setFontStyle("bold");
       this.document.text("Tot.Bruto", footerX, linea, fieldHeader);
       this.document.text("%Dto.", footerX + 20, linea, fieldHeader);
       this.document.text("Descuento", footerX + 40, linea, fieldHeader);
@@ -376,6 +384,7 @@ class InvoiceMaker {
       this.document.text("Cuota", footerX + 80, linea, fieldHeader);
       this.document.text("G. ENVIO", footerX + 100, linea, fieldHeader);
       this.document.text("NETO", footerX + 120, linea, fieldHeader);
+      this.document.setFontStyle("normal");
 
       this.document.text(data.totalBruto.toFixed(2), footerX, lineaData, field);
       this.document.text(
@@ -403,6 +412,7 @@ class InvoiceMaker {
         lineaData,
         field
       );
+      this.document.setFontStyle("bold");
       this.document.text(data.totalNeto, footerX + 120, lineaData, field);
     }
   };

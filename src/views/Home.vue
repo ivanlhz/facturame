@@ -62,15 +62,15 @@
         pdfMaker.pdfSetContentHeader(value);
         pdfMaker.pdfSetConentTable({
           headers:[
-            {name: 'Cant', width: 40, align: 'right'},
-            {name: 'Descripción', width: 160},
-            {name: 'Precio Un.', width: 180, align: 'right'},
+            {name: 'Cant', width: 35, align: 'right'},
+            {name: 'Descripción', width: 150},
+            {name: 'Precio Un.', width: 176, align: 'right'},
             {name: 'Importe', width: 200, align: 'right'}
           ],
           data : pdfMaker.parceDataForTable(value.data)
         })
         pdfMaker.pdfSetDocumentFooter(value.footerData);
-        pdfMaker.drawMargins();
+        // pdfMaker.drawMargins();
 
         doc.save('a4.pdf')
       }
