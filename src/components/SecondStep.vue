@@ -6,7 +6,20 @@
           <v-text-field  v-model="invoice.number" :counter="invoiceMax" :maxlength="invoiceMax" label="Nº Factura"/>
         </v-flex>
         <v-flex xs12 md4>
-          <v-text-field v-model="invoice.date" type="date" label="date" required />
+             <v-menu
+              :close-on-content-click="false"
+              v-model="menu"
+              :nudge-right="40"
+              lazy
+              transition="scale-transition"
+              offset-y
+              full-width
+              min-width="290px"
+            >
+            <v-text-field  slot="activator" v-model="invoice.date" type="date" label="fecha" prepend-icon="event"
+            readonly required />
+           <v-date-picker locale="es" v-model="invoice.date" @input="menu = false"></v-date-picker>
+          </v-menu>
         </v-flex>
         <v-flex xs12 md4>
           <v-text-field v-model="invoice.seller" :counter="sellerMax" :maxlength="sellerMax" label="Vendedor" required />
@@ -40,6 +53,7 @@
 <script>
 import InvoiceItemsTable from './InvoiceItemsTable';
 import InvoiceTotalsTable from './InvoiceTotalsTable';
+import moment from 'moment';
 
 export default {
   components: {
@@ -50,9 +64,10 @@ export default {
     nMax: 12,
     invoiceMax: 7,
     sellerMax: 7,
+    menu: false,
     invoice: {
       number: '',
-      date:'',
+      date: new Date().toISOString().substr(0, 10),
       seller:'',
       totalBruto: 0,
       data:[],
@@ -70,11 +85,13 @@ export default {
       }
     },
     savePDF() {
-      this.$emit('save', this.invoice);
+      const invoice = Object.assign({}, this.invoice);
+      invoice.date = moment(invoice.date).format('DD/MM/YYYY')
+      this.$emit('save', invoice);
     },
     saveFooterData (value) {
       this.invoice.footerData = value;
-    }
+    },
   }
 }
 </script>
