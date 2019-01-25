@@ -422,10 +422,12 @@ class InvoiceMaker {
    */
   parceDataForTable = list => {
     const finalData = [];
-    list.map(row => {
+    const _list = [...list];
+    _list.map(row => {
       const rowList = [];
       Object.keys(row).map(key => {
         if (typeof row[key] !== "string") row[key] = row[key].toFixed(2);
+        if (key === "amount") row[key] = row[key].split(".")[0];
         rowList.push(row[key]);
       });
       finalData.push(rowList);
