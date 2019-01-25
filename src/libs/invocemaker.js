@@ -386,34 +386,34 @@ class InvoiceMaker {
       this.document.text("NETO", footerX + 120, linea, fieldHeader);
       this.document.setFontStyle("normal");
 
-      this.document.text(data.totalBruto.toFixed(2), footerX, lineaData, field);
+      this.document.text(this.checkBeforeFix2(data.totalBruto), footerX, lineaData, field);
       this.document.text(
-        data.descuento.toFixed(2),
+        this.checkBeforeFix2(data.descuento),
         footerX + 20,
         lineaData,
         field
       );
       this.document.text(
-        data.descuentoNeto.toFixed(2),
+        this.checkBeforeFix2(data.descuentoNeto),
         footerX + 40,
         lineaData,
         field
       );
-      this.document.text(data.igic.toFixed(2), footerX + 60, lineaData, field);
+      this.document.text(this.checkBeforeFix2(data.igic), footerX + 60, lineaData, field);
       this.document.text(
-        data.igicNeto.toFixed(2),
+        this.checkBeforeFix2(data.igicNeto),
         footerX + 80,
         lineaData,
         field
       );
       this.document.text(
-        data.gastosEnvio.toFixed(2),
+        this.checkBeforeFix2(data.gastosEnvio),
         footerX + 100,
         lineaData,
         field
       );
       this.document.setFontStyle("bold");
-      this.document.text(data.totalNeto.toFixed(2), footerX + 120, lineaData, field);
+      this.document.text(this.checkBeforeFix2(data.totalNeto), footerX + 120, lineaData, field);
     }
   };
 
@@ -426,7 +426,7 @@ class InvoiceMaker {
     _list.map(row => {
       const rowList = [];
       Object.keys(row).map(key => {
-        if (typeof row[key] !== "string") row[key] = row[key].toFixed(2);
+        row[key] = this.checkBeforeFix2(row[key]);
         if (key === "amount") row[key] = row[key].split(".")[0];
         rowList.push(row[key]);
       });
@@ -434,6 +434,12 @@ class InvoiceMaker {
     });
     return finalData;
   };
+
+  /**
+   * If the param is a number replace by a string with 2 decimals else return the same param
+   */
+  checkBeforeFix2 = element =>
+    typeof element !== "string" ? element.toFixed(2) : element;
 }
 
 export {
