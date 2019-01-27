@@ -2,7 +2,6 @@
   <v-container>
     <v-layout>
       <v-flex>
-        <page-title />
         <v-stepper v-model="e1">
           <v-stepper-header>
             <v-stepper-step :complete="e1 > 0" step="1">Detalle cliente</v-stepper-step>

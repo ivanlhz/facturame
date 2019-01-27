@@ -54,6 +54,7 @@
 import InvoiceItemsTable from './InvoiceItemsTable';
 import InvoiceTotalsTable from './InvoiceTotalsTable';
 import moment from 'moment';
+import {mapState} from 'vuex';
 
 export default {
   components: {
@@ -66,12 +67,12 @@ export default {
     sellerMax: 7,
     menu: false,
     invoice: {
-      number: '',
-      date: new Date().toISOString().substr(0, 10),
-      seller:'',
-      totalBruto: 0,
-      data:[],
-      footerData: {}
+      number: '', // Invoce number
+      date: new Date().toISOString().substr(0, 10), // Ivoice date
+      seller:'', // Invioce seller
+      totalBruto: 0, // Invvoice current total
+      data:[], // Invoice Lines
+      footerData: {} // Invoice totals calulations
     }
   }), 
   methods:{
